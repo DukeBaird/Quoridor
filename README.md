@@ -12,4 +12,6 @@ If you're going to do any work, create a feature branch (install git flow, use a
 
 The only file you should need to edit is public/quoridor.js
 
+Position 0,0 is the top left corner
+
 Any questions send me a text.
