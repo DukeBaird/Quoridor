@@ -3,6 +3,8 @@ var ctx = canvas.getContext("2d");
 var w = $("#canvas").width();
 var h = $("#canvas").height();
 var cellwidth = 50;
+var player_1 = [4,0];
+var player_2 = [4,8];
 
 function draw_board(){
     for (var x =0; x < 9; x++){
@@ -15,9 +17,26 @@ function draw_board(){
     }
 }
 
+function draw_players(){
+    ctx.fillStyle="green";
+    ctx.strokeStyle = "green";
+    ctx.beginPath();
+    ctx.arc(100 + player_1[0]*100,100 + player_1[1]*100,45,0,2*Math.PI);
+    ctx.stroke();   
+    ctx.fill();
+    
+    ctx.fillStyle="blue";
+    ctx.strokeStyle = "blue";
+    ctx.beginPath();
+    ctx.arc(100 + player_2[0]*100,100 + player_2[1]*100,45,0,2*Math.PI);
+    ctx.stroke();   
+    ctx.fill();
+    
+}
 
 function start_game(){
 	draw_board();
+    draw_players();
 }
 
 
