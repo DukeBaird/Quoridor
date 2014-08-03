@@ -2,6 +2,7 @@ var canvas = $("#canvas")[0];
 var ctx = canvas.getContext("2d");
 var w = $("#canvas").width();
 var h = $("#canvas").height();
+// var bard = 2d array?
 var cellwidth = 50;
 var turn_player = 1;
 var player_1 = [4,0];
