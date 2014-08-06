@@ -4,13 +4,13 @@ var w = $("#canvas").width();
 var h = $("#canvas").height();
 var cellwidth = 50;
 var turn_player = 1;
-var p1_barriers = 10;
-var p2_barriers = 10;
+var p1_barriers = 8;
+var p2_barriers = 8;
 var board = [
   "EBEXEXEX1XEXEXEXE",
-  "XBBXXXXXXXXXXXXXX",
+  "XXBXXXXXXXXXXXXXX",
   "EBEXEXEXEXEXEXEXE",
-  "XBBBXXXXXXXXXXXXX",
+  "XXBXXXXXXXXXXXXXX",
   "EXEXEXEXEXEXEXEXE",
   "XXXXXXXXXXXXXXXXX",
   "EXEXEXEXEXEXEXEXE",
@@ -93,7 +93,7 @@ function draw_Barriers(){
 
 function start_game(){
 	draw_board();
-    draw_Barriers();
+  draw_Barriers();
 }
 
 
