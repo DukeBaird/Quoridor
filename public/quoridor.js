@@ -3,7 +3,7 @@ var ctx = canvas.getContext("2d");
 var w = $("#canvas").width();
 var h = $("#canvas").height();
 var cellwidth = 50;
-var turn_player = 1;
+var active_player = 1;
 var p1 = {x: 8, y: 0};
 var p2 = {x: 8, y: 15}
 var p1_barriers = 10;
@@ -26,7 +26,7 @@ var board = [
   "EXEXEXEXEXEXEXEXE",
   "XXXXXXXXXXXXXXXXX",
   "EXEXEXEX2XEXEXEXE"
-  ];
+];
 
 
 
@@ -123,6 +123,20 @@ function start_game(){
   draw_Barriers();
 }
 
+addEventListener("keydown", function(event){
+ 
+  if (event.keyCode === 37) {
+    console.log('move left');
+  } else if (event.keyCode === 38) {
+    console.log('move up');
+  } else if (event.keyCode === 39) {
+    console.log('move right');
+  } else if (event.keyCode === 40) {
+    console.log("move down");
+  } else if (event.keyCode === 66) {
+    console.log("place barrier");
+  }
 
+})
     
 start_game();
