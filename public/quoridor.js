@@ -30,7 +30,7 @@ var board = [
 
 
 
-function draw_board(){
+function draw_board() {
     this.height = board.length;
     this.width = board[0].length;
     
@@ -106,7 +106,7 @@ function draw_board(){
 }
 
 
-function draw_Barriers(){
+function draw_Barriers() {
     
     ctx.fillStyle = "black";
     
@@ -118,17 +118,27 @@ function draw_Barriers(){
     }   
 }
 
-function start_game(){
-	draw_board();
-  draw_Barriers();
-}
-
 addEventListener("keydown", function(event){
  
   if (event.keyCode === 37) {
     console.log('move left');
   } else if (event.keyCode === 38) {
-    console.log('move up');
+    //move player up one square
+    if (true) { //this will be a barrier check eventually AND EDGE OF BOARD CHECK
+      y = p1.y;
+      x = p1.x;
+      console.log(x)
+      console.log(y)
+      board[y] = set_char_at(board[y], x, 'E');
+      y += 2;
+      board[y] = set_char_at(board[y], x, 1);
+      p1.y = y;
+      draw_board();
+      draw_Barriers();
+      change_active_player();
+    } else {
+      //error - barrier in the way
+    }
   } else if (event.keyCode === 39) {
     console.log('move right');
   } else if (event.keyCode === 40) {
@@ -138,5 +148,25 @@ addEventListener("keydown", function(event){
   }
 
 })
-    
+
+function set_char_at(str, index, chr) {
+  if (index > str.length - 1) {
+    return str;
+  }
+  return str.substr(0 , index) + chr + str.substr(index + 1);
+}
+
+function change_active_player() {
+  if (active_player === 1) {
+    active_player = 2;
+  } else {
+    active_player = 1;
+  }
+}
+
+function start_game() {
+  draw_board();
+  draw_Barriers();
+}
+
 start_game();
