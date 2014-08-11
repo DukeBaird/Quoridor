@@ -3,9 +3,9 @@ var ctx = canvas.getContext("2d");
 var w = $("#canvas").width();
 var h = $("#canvas").height();
 var cellwidth = 50;
-var active_player = 1;
-var p1 = {x: 8, y: 0};
-var p2 = {x: 8, y: 15}
+var p1 = {x: 8, y: 0,  playerNumber: 1};
+var p2 = {x: 8, y: 16, playerNumber: 2};
+var active_player = p1;
 var p1_barriers = 10;
 var p2_barriers = 10;
 var board = [
@@ -41,29 +41,29 @@ function draw_board() {
         for (var x=0; x < this.width; x++){
             if (board[y].charAt(x) === "E"){
               ctx.fillStyle = "brown";
-              ctx.fillRect(50 + x*50, 50 + y*50,100,100);
+              ctx.fillRect(50 + x * cellwidth, 50 + y * cellwidth, 100, 100);
               ctx.strokeStyle = "white";
-	            ctx.strokeRect(50 + x*50, 50 + y*50, 100, 100)
+	            ctx.strokeRect(50 + x * cellwidth, 50 + y * cellwidth, 100, 100)
             } else if (board[y].charAt(x) === "1"){
               ///draw p1
                 ctx.fillStyle = "brown";
-                ctx.fillRect(50 + x*50, 50 + y*50,100, 100);
+                ctx.fillRect(50 + x * cellwidth, 50 + y * cellwidth, 100, 100);
                 ctx.strokeStyle = "white";
-                ctx.strokeRect(50 + x*50, 50 + y*50, 100, 100)
+                ctx.strokeRect(50 + x * cellwidth, 50 + y * cellwidth, 100, 100)
                 ctx.fillStyle = "green";
                 ctx.beginPath();
-                ctx.arc(100 + x*50, 100 + y*50, 40, 0, 2* Math.PI);
+                ctx.arc(100 + x * cellwidth, 100 + y * cellwidth, 40, 0, 2 * Math.PI);
                 ctx.fill();
 
             } else if (board[y].charAt(x) === "2"){
               //draw p2
               ctx.fillStyle = "brown";
-              ctx.fillRect(50 + x*50, 50 + y*50,100, 100);
+              ctx.fillRect(50 + x * cellwidth, 50 + y * cellwidth,100, 100);
               ctx.strokeStyle = "white";
-              ctx.strokeRect(50 + x*50, 50 + y*50, 100, 100)
+              ctx.strokeRect(50 + x * cellwidth, 50 + y * cellwidth, 100, 100)
               ctx.fillStyle = "blue";
               ctx.beginPath();
-              ctx.arc(100 + x*50, 100 + y*50, 40 , 0, 2* Math.PI);
+              ctx.arc(100 + x * cellwidth, 100 + y * cellwidth, 40 , 0, 2 * Math.PI);
               ctx.fill();
             }
         }
@@ -76,29 +76,29 @@ function draw_board() {
 
             if (y === 0 || y === 15) {
               ctx.fillStyle = "black";
-              ctx.fillRect(95 + 50*x, 50 + 50*y, 10, 100);
+              ctx.fillRect(95 + cellwidth * x, 50 + cellwidth * y, 10, 100);
             }
 
             if (x === 0 || x === 15) {
               ctx.fillStyle = "black";
-              ctx.fillRect(50 + 50*x, 95 + 50*y, 100, 10);
+              ctx.fillRect(50 + cellwidth * x, 95 + cellwidth * y, 100, 10);
             }
 
             if (board[y+1].charAt(x) === "B" || board[y+1].charAt(x) === "X") {
               ctx.fillStyle = "black";
-              ctx.fillRect(95 + 50*x, 50 + 50*y, 10, 100);
+              ctx.fillRect(95 + cellwidth * x, 50 + cellwidth * y, 10, 100);
             }
 
             if (y > 0) {
               if (board[y-1].charAt(x) === "B" || board[y-1].charAt(x) === "X") {
                 ctx.fillStyle = "black";
-                ctx.fillRect(95 + 50*x, 50 + 50*y, 10, 100);
+                ctx.fillRect(95 + cellwidth * x, 50 + cellwidth * y, 10, 100);
               }
             }
 
             if (board[y].charAt(x+1) === "B" || board[y+1].charAt(x+1) === "X") {
               ctx.fillStyle = "black";
-              ctx.fillRect(50 + 50*x, 95 + 50*y, 100, 10);
+              ctx.fillRect(50 + cellwidth * x, 95 + cellwidth * y, 100, 10);
             }
           }
       }
@@ -121,28 +121,81 @@ function draw_Barriers() {
 addEventListener("keydown", function(event){
  
   if (event.keyCode === 37) {
-    console.log('move left');
+    if (true) {
+      y = active_player.y;
+      x = active_player.x;
+
+      if (board[y].charAt(x - 2) === '1' || board[y].charAt(x - 2) === '2') {
+        board[y] = set_char_at(board[y], x, 'E');
+        x -= 4
+      } else {
+        board[y] = set_char_at(board[y], x, 'E');
+        x -= 2;
+      }
+      board[y] = set_char_at(board[y], x, active_player.playerNumber);
+      active_player.x = x;
+      draw_turn();
+      change_active_player(); 
+    } else {
+      //error something in the way
+    } 
   } else if (event.keyCode === 38) {
-    //move player up one square
     if (true) { //this will be a barrier check eventually AND EDGE OF BOARD CHECK
-      y = p1.y;
-      x = p1.x;
-      console.log(x)
-      console.log(y)
-      board[y] = set_char_at(board[y], x, 'E');
-      y += 2;
-      board[y] = set_char_at(board[y], x, 1);
-      p1.y = y;
-      draw_board();
-      draw_Barriers();
+      y = active_player.y;
+      x = active_player.x;
+
+      if (board[y - 2].charAt(x) === '1' || board[y - 2].charAt(x) === '2') {
+        board[y] = set_char_at(board[y], x, 'E');
+        y -= 4
+      } else {
+        board[y] = set_char_at(board[y], x, 'E');
+        y -= 2;
+      }
+      board[y] = set_char_at(board[y], x, active_player.playerNumber);
+      active_player.y = y;
+     draw_turn();
       change_active_player();
     } else {
-      //error - barrier in the way
+      //error - something in the way
     }
   } else if (event.keyCode === 39) {
-    console.log('move right');
+    if (true){
+      y = active_player.y;
+      x = active_player.x;
+
+      if (board[y].charAt(x + 2) === '1' || board[y].charAt(x + 2) === '2') {
+        board[y] = set_char_at(board[y], x, 'E');
+        x += 4
+      } else {
+        board[y] = set_char_at(board[y], x, 'E');
+        x += 2;
+      }
+      board[y] = set_char_at(board[y], x, active_player.playerNumber);
+      active_player.x = x;
+     draw_turn();
+      change_active_player();
+    } else {
+      //error something in the way
+    }
   } else if (event.keyCode === 40) {
-    console.log("move down");
+    if (true) { //this will be a barrier check eventually AND EDGE OF BOARD CHECK
+      y = active_player.y;
+      x = active_player.x;
+
+      if (board[y + 2].charAt(x) === '1' || board[y + 2].charAt(x) === '2') {
+        board[y] = set_char_at(board[y], x, 'E');
+        y += 4
+      } else {
+        board[y] = set_char_at(board[y], x, 'E');
+        y += 2;
+      }
+      board[y] = set_char_at(board[y], x, active_player.playerNumber);
+      active_player.y = y;
+     draw_turn();
+      change_active_player();
+    } else {
+      //error - something in the way
+    }
   } else if (event.keyCode === 66) {
     console.log("place barrier");
   }
@@ -157,16 +210,16 @@ function set_char_at(str, index, chr) {
 }
 
 function change_active_player() {
-  if (active_player === 1) {
-    active_player = 2;
+  if (active_player === p1) {
+    active_player = p2;
   } else {
-    active_player = 1;
+    active_player = p1;
   }
 }
 
-function start_game() {
+function draw_turn() {
   draw_board();
   draw_Barriers();
 }
 
-start_game();
+draw_turn();
