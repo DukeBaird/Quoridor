@@ -14,4 +14,6 @@ The only file you should need to edit is public/quoridor.js
 
 Position 0,0 is the top left corner
 
+Sprites to be added later
+
 Any questions send me a text.
