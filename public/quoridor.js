@@ -125,18 +125,21 @@ addEventListener("keydown", function(event){
       y = active_player.y;
       x = active_player.x;
       if (board[y].charAt(0) !== active_player.playerNumber.toString()) {
-
-      if (board[y].charAt(x - 2) === '1' || board[y].charAt(x - 2) === '2') {
-        board[y] = set_char_at(board[y], x, 'E');
-        x -= 4
-      } else {
-        board[y] = set_char_at(board[y], x, 'E');
-        x -= 2;
-      }
-      board[y] = set_char_at(board[y], x, active_player.playerNumber);
-      active_player.x = x;
-      draw_turn();
-      change_active_player(); 
+        if (board[y].charAt(x - 1) !== 'B') {
+          if (board[y].charAt(x - 2) === '1' || board[y].charAt(x - 2) === '2') {
+            board[y] = set_char_at(board[y], x, 'E');
+            x -= 4
+          } else {
+            board[y] = set_char_at(board[y], x, 'E');
+            x -= 2;
+          }
+          board[y] = set_char_at(board[y], x, active_player.playerNumber);
+          active_player.x = x;
+          draw_turn();
+          change_active_player(); 
+        } else {
+          console.log("Barrier in the way!");
+        }
     } else {
       console.log("at the board edge");
     } 
@@ -144,18 +147,21 @@ addEventListener("keydown", function(event){
       y = active_player.y;
       x = active_player.x;
     if (board[0].charAt(x) !== active_player.playerNumber.toString()) {
-
-      if (board[y - 2].charAt(x) === '1' || board[y - 2].charAt(x) === '2') {
-        board[y] = set_char_at(board[y], x, 'E');
-        y -= 4
+      if (board[y - 1].charAt(x) !== 'B') {
+        if (board[y - 2].charAt(x) === '1' || board[y - 2].charAt(x) === '2') {
+          board[y] = set_char_at(board[y], x, 'E');
+          y -= 4
+        } else {
+          board[y] = set_char_at(board[y], x, 'E');
+          y -= 2;
+        }
+        board[y] = set_char_at(board[y], x, active_player.playerNumber);
+        active_player.y = y;
+        draw_turn();
+        change_active_player();
       } else {
-        board[y] = set_char_at(board[y], x, 'E');
-        y -= 2;
+        console.log("Barrier in the way!");
       }
-      board[y] = set_char_at(board[y], x, active_player.playerNumber);
-      active_player.y = y;
-     draw_turn();
-      change_active_player();
     } else {
       console.log("error")
     }
@@ -163,18 +169,21 @@ addEventListener("keydown", function(event){
       y = active_player.y;
       x = active_player.x;
       if (board[y].charAt(16) !== active_player.playerNumber.toString()) {x;
-
-      if (board[y].charAt(x + 2) === '1' || board[y].charAt(x + 2) === '2') {
-        board[y] = set_char_at(board[y], x, 'E');
-        x += 4
-      } else {
-        board[y] = set_char_at(board[y], x, 'E');
-        x += 2;
-      }
-      board[y] = set_char_at(board[y], x, active_player.playerNumber);
-      active_player.x = x;
-     draw_turn();
-      change_active_player();
+        if (board[y].charAt(x + 1) !== 'B') {
+          if (board[y].charAt(x + 2) === '1' || board[y].charAt(x + 2) === '2') {
+            board[y] = set_char_at(board[y], x, 'E');
+            x += 4
+          } else {
+            board[y] = set_char_at(board[y], x, 'E');
+            x += 2;
+          }
+          board[y] = set_char_at(board[y], x, active_player.playerNumber);
+          active_player.x = x;
+          draw_turn();
+          change_active_player();
+        } else {
+          console.log("Barrier in the way");
+        }
     } else {
       console.log("Error edge of the board");
     }
@@ -182,26 +191,28 @@ addEventListener("keydown", function(event){
       y = active_player.y;
       x = active_player.x;
       if (board[16].charAt(x) !== active_player.playerNumber.toString()) {
-
-      if (board[y + 2].charAt(x) === '1' || board[y + 2].charAt(x) === '2') {
-        board[y] = set_char_at(board[y], x, 'E');
-        y += 4
-      } else {
-        board[y] = set_char_at(board[y], x, 'E');
-        y += 2;
-      }
-      board[y] = set_char_at(board[y], x, active_player.playerNumber);
-      active_player.y = y;
-     draw_turn();
-      change_active_player();
+        if (board[y + 1].charAt(x) !== 'B') {
+          if (board[y + 2].charAt(x) === '1' || board[y + 2].charAt(x) === '2') {
+            board[y] = set_char_at(board[y], x, 'E');
+            y += 4
+          } else {
+            board[y] = set_char_at(board[y], x, 'E');
+            y += 2;
+          }
+          board[y] = set_char_at(board[y], x, active_player.playerNumber);
+          active_player.y = y;
+          draw_turn();
+          change_active_player();
+        } else {
+          console.log('Barrier in the way!');
+        }
     } else {
       console.log("Error - Edge of board");
     }
   } else if (event.keyCode === 66) {
     console.log("place barrier");
   }
-
-})
+});
 
 function set_char_at(str, index, chr) {
   if (index > str.length - 1) {
