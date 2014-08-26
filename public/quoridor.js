@@ -37,8 +37,8 @@ function draw_board() {
     ctx.fillStyle = "white";
     ctx.fillRect(0,0,1000,1000);
    
-    for (var y=0; y < this.height; y++){
-        for (var x=0; x < this.width; x++){
+    for (var y = 0; y < this.height; y++){
+        for (var x = 0; x < this.width; x++){
             if (board[y].charAt(x) === "E"){
               ctx.fillStyle = "brown";
               ctx.fillRect(50 + x * cellwidth, 50 + y * cellwidth, 100, 100);
@@ -70,8 +70,8 @@ function draw_board() {
         }
     }
 
-    for (var y=0; y < this.height; y++){
-      for (var x=0; x < this.width; x++){
+    for (var y = 0; y < this.height; y++){
+      for (var x = 0; x < this.width; x++){
         if (board[y].charAt(x) === "B"){
             //Draw Barrier
 
@@ -251,8 +251,25 @@ function draw_turn() {
 }
 
 function clickReporter(event) {
-  console.log("Y: " + event.y + " X: " + event.x);
-}
+  // console.log("Y: " + event.y + " X: " + event.x);
+  // console.log("X: " + (event.x - 110) / 50)
+  // console.log("Y: " + (event.y - 110) / 
+  // console.log(Math.round((event.x   - 110) / 50))
+  var upBar = Math.round((event.x - 110) / 50) % 2  === 1
+  // console.log(Math.round((event.y - 85) / 50) % 2)
+  // console.log(Math.round(event.y - 85) / 50) 
+  var sideBar = Math.round((event.y - 85) / 50) % 2  === 1;
+  // console.log(upBar);
+  // console.log(sideBar);
+
+  if (upBar && sideBar) {
+    console.log('Corner')
+  } else if (upBar || sideBar) {
+    console.log('barrier')
+  } else {
+    console.log('center');
+  }
+} 
 
 canvas.addEventListener('click', clickReporter, false);
 draw_turn();
