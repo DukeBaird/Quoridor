@@ -250,4 +250,9 @@ function draw_turn() {
   check_victory();
 }
 
+function clickReporter(event) {
+  console.log("Y: " + event.y + " X: " + event.x);
+}
+
+canvas.addEventListener('click', clickReporter, false);
 draw_turn();
