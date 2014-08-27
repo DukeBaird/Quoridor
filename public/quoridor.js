@@ -3,14 +3,12 @@ var ctx = canvas.getContext("2d");
 var w = $("#canvas").width();
 var h = $("#canvas").height();
 var cellwidth = 25;
-var p1 = {x: 8, y: 0,  playerNumber: 1};
-var p2 = {x: 8, y: 16, playerNumber: 2};
+var p1 = {x: 8, y: 0,  playerNumber: 1, barriers: 10};
+var p2 = {x: 8, y: 16, playerNumber: 2, barriers: 10};
 var active_player = p1;
-var p1_barriers = 10;
-var p2_barriers = 10;
 var board = [
-  "EBEBEXEX1XEXEXEXE",
-  "BXXXXXXXXXXXXXXXB",
+  "EXEXEXEX1XEXEXEXE",
+  "XXXXXXXXXXXXXXXXX",
   "EXEXEXEXEXEXEXEXE",
   "XXXXXXXXXXXXXXXXX",
   "EXEXEXEXEXEXEXEXE",
@@ -53,7 +51,7 @@ function draw_board() {
                 ctx.strokeRect(50 + x * cellwidth, 50 + y * cellwidth, 100, 100)
                 ctx.fillStyle = "green";
                 ctx.beginPath();
-                ctx.arc(75 + x * cellwidth, 75 + y * cellwidth, 20, 0, 2 * Math.PI);
+                ctx.arc(74 + x * cellwidth, 74 + y * cellwidth, 20, 0, 2 * Math.PI);
                 ctx.fill();
 
             } else if (board[y].charAt(x) === "2"){
@@ -64,7 +62,7 @@ function draw_board() {
               ctx.strokeRect(50 + x * cellwidth, 50 + y * cellwidth, 100, 100)
               ctx.fillStyle = "blue";
               ctx.beginPath();
-              ctx.arc(75 + x * cellwidth, 75 + y * cellwidth, 20 , 0, 2 * Math.PI);
+              ctx.arc(74 + x * cellwidth, 74 + y * cellwidth, 20 , 0, 2 * Math.PI);
               ctx.fill();
             }
         }
@@ -76,53 +74,27 @@ function draw_board() {
             //Draw Barrier
             if (x === 16) {
               ctx.fillStyle = "black";
-              ctx.fillRect(50 + cellwidth * x, 70 + cellwidth * y, 50, 10);
+              ctx.fillRect(50 + cellwidth * x, 70 + cellwidth * y, 50, 8);
             }
 
             if (y === 16) {
               ctx.fillStyle = "black";
-              ctx.fillRect(70 + cellwidth * x, 50 + cellwidth * y, 10, 50);
+              ctx.fillRect(70 + cellwidth * x, 50 + cellwidth * y, 8, 50);
             }
-            // if (y === 0 || y === 15) {
-            //   ctx.fillStyle = "black";
-            //   ctx.fillRect(70 + cellwidth * x, 50 + cellwidth * y, 10, 50);
-            // }
 
-            // if (x === 0 || x === 15) {
-            //   ctx.fillStyle = "black";
-            //   ctx.fillRect(50 + cellwidth * x, 95 + cellwidth * y, 50, 10);
-            // }
-
-            // if (y > 0) {
-            //   if (board[y-1].charAt(x) === "B" || board[y-1].charAt(x) === "X") {
-            //     ctx.fillStyle = "black";
-            //     ctx.fillRect(95 + cellwidth * x, 50 + cellwidth * y, 10, 50);
-            //   }
-            // }
-
-            if (board[y+1].charAt(x) === "B" || board[y+1].charAt(x) === "X") {
-              ctx.fillStyle = "black";
-              ctx.fillRect(70 + cellwidth * x, 50 + cellwidth * y, 10, 50);
-            } else if (board[y].charAt(x+1) === "B" || board[y+1].charAt(x+1) === "X") {
-              ctx.fillStyle = "black";
-              ctx.fillRect(50 + cellwidth * x, 70 + cellwidth * y, 50, 10);
+            if (y !== 16) {
+              if (board[y+1].charAt(x) === "B" || board[y+1].charAt(x) === "X") {
+                ctx.fillStyle = "black";
+                ctx.fillRect(70 + cellwidth * x, 50 + cellwidth * y, 8, 50);
+              }
             }
+            if (board[y].charAt(x+1) === "B" || board[y].charAt(x+1) === "X") {
+              ctx.fillStyle = "black";
+              ctx.fillRect(50 + cellwidth * x, 70 + cellwidth * y, 50, 8);
+            }            
           }
       }
     }
-}
-
-
-function draw_Barriers() {
-    
-    ctx.fillStyle = "black";
-    
-    for (var x = 0; x < p1_barriers; x++){
-        ctx.fillRect(10, 50 + 50*x, 30, 10);
-    }
-    for (var x = 0; x < p2_barriers; x++){
-        ctx.fillRect(960, 940 - 50*x, 30, 10);
-    }   
 }
 
 addEventListener("keydown", function(event){
@@ -233,6 +205,7 @@ function change_active_player() {
   } else {
     active_player = p1;
   }
+  $('#display').html("Player " + active_player.playerNumber + "'s turn<br>Barriers left: " + active_player.barriers);
 }
 
 function check_victory() {
@@ -247,23 +220,37 @@ function check_victory() {
 }
 
 function display_victory(playernum) {
-  console.log("Player " + playernum +" wins!!");
+  alert("Player " + playernum +" wins!! Please play again.")
+  location.reload();
 }
 
 function draw_turn() {
   draw_board();
-  draw_Barriers();
   check_victory();
 }
 
 function clickReporter(event) {
-  console.log("Y: " + event.y + " X: " + event.x);
-  console.log("X: " + Math.round((event.x - 60) / cellwidth));
-  console.log("Y: " + Math.round((event.y - 120) / cellwidth));
+  // console.log("Y: " + event.y + " X: " + event.x);
+  // console.log("X: " + Math.round((event.x - 60) / cellwidth));
+  // console.log("Y: " + Math.round((event.y - 120) / cellwidth));
   var x = Math.round((event.x - 60) / cellwidth);
   var y = Math.round((event.y - 120) / cellwidth);
+  var upBar = x % 2 === 0;
+  var sideBar = y % 2 === 0;
 
-
+  if (upBar && sideBar) {
+    $('#display').html("Cannot place a barrier on a corner")
+  } else if (upBar || sideBar) {
+    if (board[y - 1].charAt(x - 1) === "B") {
+    } else {
+      board[y - 1] = set_char_at(board[y - 1], x - 1, "B");
+      active_player.barriers--;
+      draw_turn();
+      change_active_player();
+    }
+  } else {
+    $('#display').html("Cannot place a barrier in the center of a square")
+  }
 } 
 
 canvas.addEventListener('click', clickReporter, false);
