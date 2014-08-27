@@ -2,17 +2,17 @@ var canvas = $("#canvas")[0];
 var ctx = canvas.getContext("2d");
 var w = $("#canvas").width();
 var h = $("#canvas").height();
-var cellwidth = 50;
+var cellwidth = 25;
 var p1 = {x: 8, y: 0,  playerNumber: 1};
 var p2 = {x: 8, y: 16, playerNumber: 2};
 var active_player = p1;
 var p1_barriers = 10;
 var p2_barriers = 10;
 var board = [
-  "EBEXEXEX1XEXEXEXE",
-  "BXBXXXXXXXXXXXXXX",
-  "EBEXEXEXEXEXEXEXE",
-  "XXBXXXXXXXXXXXXXX",
+  "EBEBEXEX1XEXEXEXE",
+  "BXXXXXXXXXXXXXXXB",
+  "EXEXEXEXEXEXEXEXE",
+  "XXXXXXXXXXXXXXXXX",
   "EXEXEXEXEXEXEXEXE",
   "XXXXXXXXXXXXXXXXX",
   "EXEXEXEXEXEXEXEXE",
@@ -53,7 +53,7 @@ function draw_board() {
                 ctx.strokeRect(50 + x * cellwidth, 50 + y * cellwidth, 100, 100)
                 ctx.fillStyle = "green";
                 ctx.beginPath();
-                ctx.arc(100 + x * cellwidth, 100 + y * cellwidth, 40, 0, 2 * Math.PI);
+                ctx.arc(75 + x * cellwidth, 75 + y * cellwidth, 20, 0, 2 * Math.PI);
                 ctx.fill();
 
             } else if (board[y].charAt(x) === "2"){
@@ -64,7 +64,7 @@ function draw_board() {
               ctx.strokeRect(50 + x * cellwidth, 50 + y * cellwidth, 100, 100)
               ctx.fillStyle = "blue";
               ctx.beginPath();
-              ctx.arc(100 + x * cellwidth, 100 + y * cellwidth, 40 , 0, 2 * Math.PI);
+              ctx.arc(75 + x * cellwidth, 75 + y * cellwidth, 20 , 0, 2 * Math.PI);
               ctx.fill();
             }
         }
@@ -74,32 +74,38 @@ function draw_board() {
       for (var x = 0; x < this.width; x++){
         if (board[y].charAt(x) === "B"){
             //Draw Barrier
-
-            if (y === 0 || y === 15) {
+            if (x === 16) {
               ctx.fillStyle = "black";
-              ctx.fillRect(95 + cellwidth * x, 50 + cellwidth * y, 10, 100);
+              ctx.fillRect(50 + cellwidth * x, 70 + cellwidth * y, 50, 10);
             }
 
-            if (x === 0 || x === 15) {
+            if (y === 16) {
               ctx.fillStyle = "black";
-              ctx.fillRect(50 + cellwidth * x, 95 + cellwidth * y, 100, 10);
+              ctx.fillRect(70 + cellwidth * x, 50 + cellwidth * y, 10, 50);
             }
+            // if (y === 0 || y === 15) {
+            //   ctx.fillStyle = "black";
+            //   ctx.fillRect(70 + cellwidth * x, 50 + cellwidth * y, 10, 50);
+            // }
+
+            // if (x === 0 || x === 15) {
+            //   ctx.fillStyle = "black";
+            //   ctx.fillRect(50 + cellwidth * x, 95 + cellwidth * y, 50, 10);
+            // }
+
+            // if (y > 0) {
+            //   if (board[y-1].charAt(x) === "B" || board[y-1].charAt(x) === "X") {
+            //     ctx.fillStyle = "black";
+            //     ctx.fillRect(95 + cellwidth * x, 50 + cellwidth * y, 10, 50);
+            //   }
+            // }
 
             if (board[y+1].charAt(x) === "B" || board[y+1].charAt(x) === "X") {
               ctx.fillStyle = "black";
-              ctx.fillRect(95 + cellwidth * x, 50 + cellwidth * y, 10, 100);
-            }
-
-            if (y > 0) {
-              if (board[y-1].charAt(x) === "B" || board[y-1].charAt(x) === "X") {
-                ctx.fillStyle = "black";
-                ctx.fillRect(95 + cellwidth * x, 50 + cellwidth * y, 10, 100);
-              }
-            }
-
-            if (board[y].charAt(x+1) === "B" || board[y+1].charAt(x+1) === "X") {
+              ctx.fillRect(70 + cellwidth * x, 50 + cellwidth * y, 10, 50);
+            } else if (board[y].charAt(x+1) === "B" || board[y+1].charAt(x+1) === "X") {
               ctx.fillStyle = "black";
-              ctx.fillRect(50 + cellwidth * x, 95 + cellwidth * y, 100, 10);
+              ctx.fillRect(50 + cellwidth * x, 70 + cellwidth * y, 50, 10);
             }
           }
       }
@@ -251,21 +257,37 @@ function draw_turn() {
 }
 
 function clickReporter(event) {
-  // console.log("Y: " + event.y + " X: " + event.x);
-  // console.log("X: " + (event.x - 110) / 50)
-  // console.log("Y: " + (event.y - 110) / 
-  // console.log(Math.round((event.x   - 110) / 50))
-  var upBar = Math.round((event.x - 110) / 50) % 2  === 1
-  // console.log(Math.round((event.y - 85) / 50) % 2)
-  // console.log(Math.round(event.y - 85) / 50) 
-  var sideBar = Math.round((event.y - 85) / 50) % 2  === 1;
+  console.log("Y: " + event.y + " X: " + event.x);
+  console.log("X: " + (event.x - 60) / cellwidth)
+  console.log("Y: " + (event.y - 110) / cellwidth)
+  // console.log(Math.round((event.x   - 110) / cellwidth))
+  var upBar = Math.round((event.x - 110) / cellwidth) % 2  === 1
+  // console.log(Math.round((event.y - 85) / cellwidth) % 2)
+  // console.log(Math.round(event.y - 85) / cellwidth) 
+  var sideBar = Math.round((event.y - 85) / cellwidth) % 2  === 1;
   // console.log(upBar);
   // console.log(sideBar);
 
   if (upBar && sideBar) {
     console.log('Corner')
   } else if (upBar || sideBar) {
-    console.log('barrier')
+    x = Math.round((event.x - 60) / cellwidth);
+    y = Math.round((event.y - 110) / cellwidth);
+    console.log(x)
+    console.log(y)
+    if (board[y - 1].charAt(x) === 'X') {
+      console.log('adding barrier');
+      board[y - 1] = set_char_at(board[y - 1], x, 'B');
+      draw_turn();
+      change_active_player();
+    } else if  (board[y - 1].charAt(x) === 'X') {
+      console.log('upright barrier')
+      board[y - 1] = set_char_at(board[y - 1], x, 'B');
+      draw_turn();
+      change_active_player();
+    } else {
+      console.log("already a barrier")
+    }
   } else {
     console.log('center');
   }
