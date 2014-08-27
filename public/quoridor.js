@@ -227,7 +227,7 @@ function draw_turn() {
   check_victory();
 }
 
-function clickReporter(event) {
+function click_reporter(event) {
   // console.log("Y: " + event.y + " X: " + event.x);                //debug statments
   // console.log("X: " + Math.round((event.x - 60) / cellwidth));
   // console.log("Y: " + Math.round((event.y - 120) / cellwidth));
@@ -239,8 +239,11 @@ function clickReporter(event) {
   if (upBar && sideBar) {
     $('#display').html("Cannot place a barrier on a corner")
   } else if (upBar || sideBar) {
-    if (board[y - 1].charAt(x - 1) === "B") { 
+    if (active_player.barriers < 1) {
+      $('#display').html("No Barriers left to place");
+    } else if (board[y - 1].charAt(x - 1) === "B") { 
     //Also need to check if it will completely block the path to the other side for either player
+      $('#display').html("A barrier already exists there");
     } else {
       board[y - 1] = set_char_at(board[y - 1], x - 1, "B");
       active_player.barriers--;
@@ -252,5 +255,5 @@ function clickReporter(event) {
   }
 } 
 
-canvas.addEventListener('click', clickReporter, false);
+canvas.addEventListener('click', click_reporter, false);
 draw_turn();
