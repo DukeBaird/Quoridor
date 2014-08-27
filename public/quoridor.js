@@ -258,39 +258,12 @@ function draw_turn() {
 
 function clickReporter(event) {
   console.log("Y: " + event.y + " X: " + event.x);
-  console.log("X: " + (event.x - 60) / cellwidth)
-  console.log("Y: " + (event.y - 110) / cellwidth)
-  // console.log(Math.round((event.x   - 110) / cellwidth))
-  var upBar = Math.round((event.x - 110) / cellwidth) % 2  === 1
-  // console.log(Math.round((event.y - 85) / cellwidth) % 2)
-  // console.log(Math.round(event.y - 85) / cellwidth) 
-  var sideBar = Math.round((event.y - 85) / cellwidth) % 2  === 1;
-  // console.log(upBar);
-  // console.log(sideBar);
+  console.log("X: " + Math.round((event.x - 60) / cellwidth));
+  console.log("Y: " + Math.round((event.y - 120) / cellwidth));
+  var x = Math.round((event.x - 60) / cellwidth);
+  var y = Math.round((event.y - 120) / cellwidth);
 
-  if (upBar && sideBar) {
-    console.log('Corner')
-  } else if (upBar || sideBar) {
-    x = Math.round((event.x - 60) / cellwidth);
-    y = Math.round((event.y - 110) / cellwidth);
-    console.log(x)
-    console.log(y)
-    if (board[y - 1].charAt(x) === 'X') {
-      console.log('adding barrier');
-      board[y - 1] = set_char_at(board[y - 1], x, 'B');
-      draw_turn();
-      change_active_player();
-    } else if  (board[y - 1].charAt(x) === 'X') {
-      console.log('upright barrier')
-      board[y - 1] = set_char_at(board[y - 1], x, 'B');
-      draw_turn();
-      change_active_player();
-    } else {
-      console.log("already a barrier")
-    }
-  } else {
-    console.log('center');
-  }
+
 } 
 
 canvas.addEventListener('click', clickReporter, false);
