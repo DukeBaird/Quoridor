@@ -116,11 +116,11 @@ addEventListener("keydown", function(event){
           draw_turn();
           change_active_player(); 
         } else {
-          console.log("Barrier in the way!");
+          $('#display').html('You cant move there, try somewhere else');
         }
     } else {
-      console.log("at the board edge");
-    } 
+      $('#display').html('You cant move there, try somewhere else');
+    }
   } else if (event.keyCode === 38) {
       y = active_player.y;
       x = active_player.x;
@@ -138,10 +138,10 @@ addEventListener("keydown", function(event){
         draw_turn();
         change_active_player();
       } else {
-        console.log("Barrier in the way!");
+        $('#display').html('You cant move there, try somewhere else');
       }
     } else {
-      console.log("error")
+      $('#display').html('You cant move there, try somewhere else');
     }
   } else if (event.keyCode === 39) {
       y = active_player.y;
@@ -160,10 +160,10 @@ addEventListener("keydown", function(event){
           draw_turn();
           change_active_player();
         } else {
-          console.log("Barrier in the way");
+          $('#display').html('You cant move there, try somewhere else');
         }
     } else {
-      console.log("Error edge of the board");
+      $('#display').html('You cant move there, try somewhere else');
     }
   } else if (event.keyCode === 40) {
       y = active_player.y;
@@ -182,13 +182,11 @@ addEventListener("keydown", function(event){
           draw_turn();
           change_active_player();
         } else {
-          console.log('Barrier in the way!');
+          $('#display').html('You cant move there, try somewhere else');
         }
     } else {
-      console.log("Error - Edge of board");
+      $('#display').html('You cant move there, try somewhere else');
     }
-  } else if (event.keyCode === 66) {
-    console.log("place barrier");
   }
 });
 
@@ -230,7 +228,7 @@ function draw_turn() {
 }
 
 function clickReporter(event) {
-  // console.log("Y: " + event.y + " X: " + event.x);
+  // console.log("Y: " + event.y + " X: " + event.x);                //debug statments
   // console.log("X: " + Math.round((event.x - 60) / cellwidth));
   // console.log("Y: " + Math.round((event.y - 120) / cellwidth));
   var x = Math.round((event.x - 60) / cellwidth);
@@ -241,7 +239,8 @@ function clickReporter(event) {
   if (upBar && sideBar) {
     $('#display').html("Cannot place a barrier on a corner")
   } else if (upBar || sideBar) {
-    if (board[y - 1].charAt(x - 1) === "B") {
+    if (board[y - 1].charAt(x - 1) === "B") { 
+    //Also need to check if it will completely block the path to the other side for either player
     } else {
       board[y - 1] = set_char_at(board[y - 1], x - 1, "B");
       active_player.barriers--;
